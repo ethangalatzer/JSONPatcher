@@ -4,13 +4,13 @@ import click
 
 # Checks if the path points to an existent value, a nonexistent value, or an array
 def check_path(json, path):
-    ptr = json
+    json_traverser = json
     for key in path:
-        if type(ptr) == dict and key in ptr:
-            ptr = ptr[key]
+        if type(json_traverser) == dict and key in json_traverser:
+            json_traverser = json_traverser[key]
         else:
             return False
-    if type(ptr) == list:
+    if type(json_traverser) == list:
         return "arr"
     return True
 
@@ -22,14 +22,14 @@ def modify(json, path, new_value):
     if not path_validity:
         click.echo(f"Value at {'.'.join(path)} does not exist")
         exit()
-    ptr = json
+    json_traverser = json
     for key in path:
         if key == path[-1]:
-            ptr[key] = new_value
+            json_traverser[key] = new_value
             break
-        if key not in ptr:
-            ptr[key] = {}
-        ptr = ptr[key]
+        if key not in json_traverser:
+            json_traverser[key] = {}
+        json_traverser = json_traverser[key]
     return json
 
 # Adds the value at the path into the new_value (same as modify when not a list)
@@ -39,17 +39,17 @@ def add(json, path, new_value):
     if path_validity and path_validity != "arr":
         click.echo(f"Value at {'.'.join(path)} already exists")
         quit()
-    ptr = json
+    json_traverser = json
     for key in path:
         if key == path[-1]:
-            if key in ptr and type(ptr[key]) == list:
-                ptr[key].append(new_value)
+            if key in json_traverser and type(json_traverser[key]) == list:
+                json_traverser[key].append(new_value)
                 break
-            ptr[key] = new_value
+            json_traverser[key] = new_value
             break
-        if key not in ptr:
-            ptr[key] = {}
-        ptr = ptr[key]
+        if key not in json_traverser:
+            json_traverser[key] = {}
+        json_traverser = json_traverser[key]
     return json
 
 # Deletes the value at the path, or all instances of the value when in an array
@@ -59,16 +59,16 @@ def delete(json, path, value=None):
     if not path_validity:
         click.echo(f"Value at {'.'.join(path)} does not exist")
         exit()
-    ptr = json
+    json_traverser = json
     for key in path:
         if key == path[-1]:
-            if type(ptr[key]) == list and value != None:
-                while value in ptr[key]:
-                    ptr[key].remove(value)
+            if type(json_traverser[key]) == list and value != None:
+                while value in json_traverser[key]:
+                    json_traverser[key].remove(value)
                 break
-            ptr.pop(key)
+            json_traverser.pop(key)
             break
-        ptr = ptr[key]
+        json_traverser = json_traverser[key]
     return json
 
 # Gets all needed values from operation
