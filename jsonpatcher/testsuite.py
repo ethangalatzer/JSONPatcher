@@ -1,6 +1,6 @@
 import unittest
 import jsonpatcher
-
+from click.testing import CliRunner
 
 class PatcherTestSuite(unittest.TestCase):
     def test_existent_path(self):
@@ -69,6 +69,11 @@ class PatcherTestSuite(unittest.TestCase):
     def test_operation_values(self):
         self.assertEqual(jsonpatcher.operation_values({"op": "modify", "path": "user.name", "value": "Alice"}), ("modify", "user.name", ["user", "name"], "Alice"))
 
+    def test_full(self):
+        runner = CliRunner()
+        result = runner.invoke(jsonpatcher.patch, '--input testdata.json --patch testpatch1.json --patch testpatch2.json --output output.json')
+        with open("expected_output.json", "r") as expected_output, open("output.json", "r") as actual_output:
+            self.assertEqual(expected_output.read(), actual_output.read())
 
 if __name__ == '__main__':
     unittest.main()

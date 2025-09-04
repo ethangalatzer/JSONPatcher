@@ -86,9 +86,13 @@ def operation_values(operation):
 def sort_patches_by_change_number(patches):
     patch_change_numbers = {}
     for patch in patches:
-        with open(patch, "r") as json_patch:
-            json_patch_data = json.load(json_patch)
-            patch_change_numbers[json_patch_data["change_number"]] = patch
+        try:
+            with open(patch, "r") as json_patch:
+                json_patch_data = json.load(json_patch)
+                patch_change_numbers[json_patch_data["change_number"]] = patch
+        except FileNotFoundError:
+            click.echo(f"Patch {patch} does not exist")
+            exit()
     return(dict(sorted(patch_change_numbers.items())))
 
 # Click decorators
@@ -99,7 +103,11 @@ def sort_patches_by_change_number(patches):
 def patch(input, patch, output):
 
     patch_change_numbers = sort_patches_by_change_number(patch)
-
+    try:
+        open(input, "r").close()
+    except FileNotFoundError:
+        click.echo(f"Input JSON file does not exist")
+        exit()
     # Reads data file
     with open(input, "r") as json_input:
         try:
@@ -128,7 +136,7 @@ def patch(input, patch, output):
                             modify(json_data, patch_path_list, patch_value)
                         case "delete":
                             delete(json_data, patch_path_list, patch_value)
-                        case "_":
+                        case _:
                             # Forces valid op
                             click.echo("Operation must be add, modify, or delete")
                             exit()
