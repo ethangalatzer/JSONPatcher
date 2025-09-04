@@ -24,7 +24,7 @@ class PatcherTestSuite(unittest.TestCase):
             {"user": {"name": {"initials": "EG", "full_name": "EthanGalatzer"}, "ID": 1486}})
 
     def test_add_illegal(self):
-        self.assertRaises(SystemExit, jsonpatcher.add, {"user": {"name": {"initials": "EG"}, "ID": 1486}}, ["user", "name"], "EthanGalatzer")
+        self.assertRaises(ValueError, jsonpatcher.add, {"user": {"name": {"initials": "EG"}, "ID": 1486}}, ["user", "name"], "EthanGalatzer")
 
     def test_add_to_array(self):
         self.assertEqual(
@@ -37,7 +37,7 @@ class PatcherTestSuite(unittest.TestCase):
             {"user": {"name": "EthanGalatzer", "ID": 1486}})
 
     def test_modify_illegal(self):
-        self.assertRaises(SystemExit, jsonpatcher.modify, {"user": {"name": {"initials": "EG"}, "ID": 1486}}, ["user", "name", "full_name"], "EthanGalatzer")
+        self.assertRaises(ValueError, jsonpatcher.modify, {"user": {"name": {"initials": "EG"}, "ID": 1486}}, ["user", "name", "full_name"], "EthanGalatzer")
 
     def test_modify_array(self):
         self.assertEqual(
@@ -51,7 +51,7 @@ class PatcherTestSuite(unittest.TestCase):
             {"user": {"ID": 1486}})
 
     def test_delete_illegal(self):
-        self.assertRaises(SystemExit, jsonpatcher.delete, {"user": {"name": {"initials": "EG"}, "ID": 1486}},
+        self.assertRaises(ValueError, jsonpatcher.delete, {"user": {"name": {"initials": "EG"}, "ID": 1486}},
                           ["user", "name", "full_name"], "EthanGalatzer")
 
     def test_delete_array_value(self):

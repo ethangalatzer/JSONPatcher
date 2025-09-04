@@ -21,14 +21,13 @@ def modify(json, path, new_value):
     # Checks that path points to an existent value
     if path_validity == "non":
         click.echo(f"Value at {'.'.join(path)} does not exist")
-        exit()
+        raise ValueError
     json_traverser = json
     for key in path:
         if key == path[-1]:
             json_traverser[key] = new_value
             break
-        if key not in json_traverser:
-            json_traverser[key] = {}
+
         json_traverser = json_traverser[key]
     return json
 
@@ -38,7 +37,7 @@ def add(json, path, new_value):
     # Checks that path points to a nonexistent value
     if path_validity == "key":
         click.echo(f"Value at {'.'.join(path)} already exists")
-        quit()
+        raise ValueError
     json_traverser = json
     for key in path:
         if key == path[-1]:
@@ -58,7 +57,7 @@ def delete(json, path, value=None):
     # Checks that path points to an existent value
     if path_validity == "non":
         click.echo(f"Value at {'.'.join(path)} does not exist")
-        exit()
+        raise ValueError
     json_traverser = json
     for key in path:
         if key == path[-1]:
@@ -92,8 +91,11 @@ def sort_patches_by_change_number(patches):
                 patch_change_numbers[json_patch_data["change_number"]] = patch
         except FileNotFoundError:
             click.echo(f"Patch {patch} does not exist")
-            exit()
-    return(dict(sorted(patch_change_numbers.items())))
+            raise FileNotFoundError
+        except:
+            click.echo(f"Patch {patch} is invalid")
+            raise Exception
+    return dict(sorted(patch_change_numbers.items()))
 
 # Click decorators
 @click.command()
@@ -101,8 +103,10 @@ def sort_patches_by_change_number(patches):
 @click.option("--patch", type=str, prompt=True, help="Patch JSON file(s), write --patch (file) for each", required=True, multiple=True)
 @click.option("--output", type=str, prompt=True, help="Output JSON file", required=True)
 def patch(input, patch, output):
-
-    patch_change_numbers = sort_patches_by_change_number(patch)
+    try:
+        patch_change_numbers = sort_patches_by_change_number(patch)
+    except FileNotFoundError:
+        exit()
     try:
         open(input, "r").close()
     except FileNotFoundError:
@@ -129,17 +133,20 @@ def patch(input, patch, output):
                     patch_op, patch_path, patch_path_list, patch_value = operation_values(operation)
 
                     # Executes operation by case
-                    match patch_op:
-                        case "add":
-                            add(json_data, patch_path_list, patch_value)
-                        case "modify":
-                            modify(json_data, patch_path_list, patch_value)
-                        case "delete":
-                            delete(json_data, patch_path_list, patch_value)
-                        case _:
-                            # Forces valid op
-                            click.echo("Operation must be add, modify, or delete")
-                            exit()
+                    try:
+                        match patch_op:
+                            case "add":
+                                add(json_data, patch_path_list, patch_value)
+                            case "modify":
+                                modify(json_data, patch_path_list, patch_value)
+                            case "delete":
+                                delete(json_data, patch_path_list, patch_value)
+                            case _:
+                                # Forces valid op
+                                click.echo("Operation must be add, modify, or delete")
+                                exit()
+                    except ValueError:
+                        exit()
 
     # Writes to output file
     with open(output, "w") as json_output:
