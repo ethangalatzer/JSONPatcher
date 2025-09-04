@@ -18,4 +18,7 @@ To use:
   jsonpatcher --input inputfile.json --patch patchfile.json --output outputfile.json
   
   For multiple patch files, repeat '--patch patchfile.json' for each file
+
+To test:
+  Navigate to the jsonpatcher folder and run testsuite.py
      
