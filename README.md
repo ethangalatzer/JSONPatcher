@@ -15,6 +15,9 @@ All tests are in testsuite.py, each function has one or more tests and there is 
        `venv\Scripts\activate`
      
        `python -m pip install -e .`
+
+4. Check that the program was installed correctly by running:
+     `jsonpatcher --help`
      
 ## Usage:
   While in venv, patch a JSON file with the following command:
