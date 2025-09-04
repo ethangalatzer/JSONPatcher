@@ -1,5 +1,9 @@
 This project patches JSON files through other JSON files by adding, modifying or deleting.
 
+Logic is in jsonpatcher.py, using json library to parse and click library for command line interfacing. 
+
+All tests in testsuite.py, each function has one or more tests, and there is a full test that runs through the whole process, using testdata.json, testpatch1.json, and testpatch2.json.
+
 
 To install:
   1. Download all files
