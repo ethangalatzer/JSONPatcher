@@ -9,17 +9,17 @@ def check_path(json, path):
         if type(json_traverser) == dict and key in json_traverser:
             json_traverser = json_traverser[key]
         else:
-            return False
+            return "non"
     if type(json_traverser) == list:
         return "arr"
-    return True
+    return "key"
 
 
 # Modifies the value at the path into the new_value
 def modify(json, path, new_value):
     path_validity = check_path(json, path)
     # Checks that path points to an existent value
-    if not path_validity:
+    if path_validity == "non":
         click.echo(f"Value at {'.'.join(path)} does not exist")
         exit()
     json_traverser = json
@@ -35,8 +35,8 @@ def modify(json, path, new_value):
 # Adds the value at the path into the new_value (same as modify when not a list)
 def add(json, path, new_value):
     path_validity = check_path(json, path)
-    # Checks that path points to either a nonexistent value or a list
-    if path_validity and path_validity != "arr":
+    # Checks that path points to a nonexistent value
+    if path_validity == "key":
         click.echo(f"Value at {'.'.join(path)} already exists")
         quit()
     json_traverser = json
@@ -56,7 +56,7 @@ def add(json, path, new_value):
 def delete(json, path, value=None):
     path_validity = check_path(json, path)
     # Checks that path points to an existent value
-    if not path_validity:
+    if path_validity == "non":
         click.echo(f"Value at {'.'.join(path)} does not exist")
         exit()
     json_traverser = json

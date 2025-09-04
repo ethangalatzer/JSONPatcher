@@ -6,12 +6,12 @@ class PatcherTestSuite(unittest.TestCase):
     def test_existent_path(self):
         self.assertEqual(
             jsonpatcher.check_path({"user": {"name": {"initials": "EG"}, "ID": 1486}},
-                                   ["user", "name", "initials"]),True)
+                                   ["user", "name", "initials"]),"key")
 
     def test_nonexistent_path(self):
         self.assertEqual(
             jsonpatcher.check_path({"user": {"name": {"initials": "EG"}, "ID": 1486}},
-                                   ["user", "name", "initials", "EG", "E"]),False)
+                                   ["user", "name", "initials", "EG", "E"]),"non")
 
     def test_array_path(self):
         self.assertEqual(
