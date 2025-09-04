@@ -1,5 +1,5 @@
 import unittest
-from . import jsonpatcher
+import jsonpatcher
 
 
 class PatcherTestSuite(unittest.TestCase):
