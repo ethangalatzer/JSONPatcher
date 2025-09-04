@@ -1,0 +1,19 @@
+{
+  "user": {
+    "id": 1,
+    "name": "Bob",
+    "age": 25,
+    "temp_field": "to be removed",
+    "temp_array": ["123", "4567", "89"],
+    "friends": [
+      "Carol", "Denise", "Eric", "Carol"
+    ]
+  },
+  "settings": {
+    "theme": "light",
+    "notifications": true,
+    "ID": [
+      123, 145, 561
+    ]
+  }
+}

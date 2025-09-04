@@ -1,0 +1,9 @@
+{
+  "change_number": 102,
+  "operations": [
+    { "op": "delete", "path": "user.temp_field" },
+    { "op": "add", "path": "settings.language", "value": "en-US" },
+    { "op": "modify", "path": "settings.theme", "value": "dark" },
+    { "op": "modify", "path": "settings.ID", "value": 1 }
+  ]
+}

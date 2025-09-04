@@ -1,0 +1,10 @@
+{
+  "change_number": 101,
+  "operations": [
+    { "op": "modify", "path": "user.name", "value": "Alice" },
+    { "op": "modify", "path": "user.age", "value": 30 },
+    { "op": "add", "path": "user.address.city", "value": "Seattle" },
+    { "op": "delete", "path": "user.temp_array"},
+    { "op": "delete", "path": "user.friends", "value": "Carol" }
+  ]
+}
