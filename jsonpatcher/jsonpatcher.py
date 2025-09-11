@@ -112,8 +112,6 @@ def sort_patches_by_change_number(patch_files: tuple[str, ...]):
 def patch(input_file: str, patch_files: tuple[str], output_file: str):
     try:
         sorted_patches = sort_patches_by_change_number(patch_files)
-    except FileNotFoundError:
-        exit()
     except:
         exit()
 
