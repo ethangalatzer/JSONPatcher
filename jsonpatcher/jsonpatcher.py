@@ -105,10 +105,10 @@ def sort_patches_by_change_number(patch_files: tuple[str, ...]):
 
 # Click decorators
 @click.command()
-@click.option("--input", type=str, prompt=True, help="Input JSON file", required=True)
-@click.option("--patch", type=str, prompt=True, help="Patch JSON file(s), write --patch (file) for each", required=True,
+@click.option("--input", 'input_file', type=str, prompt=True, help="Input JSON file", required=True,)
+@click.option("--patch", 'patch_files', type=str, prompt=True, help="Patch JSON file(s), write --patch (file) for each", required=True,
               multiple=True)
-@click.option("--output", type=str, prompt=True, help="Output JSON file", required=True)
+@click.option("--output", 'output_file', type=str, prompt=True, help="Output JSON file", required=True)
 def patch(input_file: str, patch_files: tuple[str], output_file: str):
     try:
         sorted_patches = sort_patches_by_change_number(patch_files)
